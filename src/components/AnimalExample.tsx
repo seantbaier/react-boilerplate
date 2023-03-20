@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
-import { useFetchDog } from '@/hooks/useFetchDog';
 import LazySpinner from './LazySpinner';
+import { useFetchDog } from '@/hooks/useFetchDog';
 
-export default function AnimalExample() {
+function AnimalExample() {
   const {
     dog,
     initFetchDog,
@@ -15,7 +15,7 @@ export default function AnimalExample() {
 
   useEffect(() => {
     initFetchDog();
-  }, []);
+  }, [initFetchDog]);
 
   return (
     <div className='my-8 mx-auto max-w-2xl'>
@@ -38,3 +38,5 @@ export default function AnimalExample() {
     </div>
   );
 }
+
+export default AnimalExample;
