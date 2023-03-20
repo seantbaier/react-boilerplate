@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { Meal, searchMeals } from '@/api/mealApi';
-import { didAbort } from '@/api/api';
+import { didAbort } from '@/api/withAbort';
 import type { Canceler } from '@/api/api.types';
 
 type AbortRef = {

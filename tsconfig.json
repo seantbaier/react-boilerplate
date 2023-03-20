@@ -21,6 +21,6 @@
       "test-utils": ["src/utils/test-utils"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "server"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
