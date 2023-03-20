@@ -7,6 +7,9 @@ import PaginatedQuotes from '@/components/PaginatedQuotes';
 import InfiniteScrollQuotes from '@/components/InfiniteScrollQuotes';
 import QueryCancellation from '@/components/QueryCancellation';
 import QueryCancellationWithAbortSignal from './components/QueryCancellationWithAbortSignal';
+import BusinessCardEditor from '@/components/BusinessCard/BusinessCardEditor';
+import GlobalSpinnerContext from '@/context/GlobalSpinnerContext';
+import GlobalSpinnerExample from '@/components/GlobalSpinner/GlobalSpinnerExample';
 // import SearchMealExample from '@/components/SearchMealExample';
 // import AnimalExample from '@/components/AnimalExample';
 
@@ -18,22 +21,26 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <ToastContainer />
-        <div className='App mx-auto max-w-6xl text-center my-8'>
-          <h1 className='font-semibold text-2xl'>
-            React - The Road To Enterprise
-          </h1>
-          <QueryCancellationWithAbortSignal />
-          <UpdateQuotes />
-          <FetchTopQuotes />
-          <PaginatedQuotes />
-          <InfiniteScrollQuotes />
-          <QueryCancellation />
-          {/* <AnimalExample /> */}
-          {/* <SearchMealExample /> */}
-        </div>
-      </QueryClientProvider>
+      <GlobalSpinnerContext>
+        <QueryClientProvider client={queryClient}>
+          <ToastContainer />
+          <div className='App mx-auto max-w-6xl text-center my-8'>
+            <h1 className='font-semibold text-2xl'>
+              React - The Road To Enterprise
+            </h1>
+            <GlobalSpinnerExample />
+            <BusinessCardEditor />
+            <QueryCancellationWithAbortSignal />
+            <UpdateQuotes />
+            <FetchTopQuotes />
+            <PaginatedQuotes />
+            <InfiniteScrollQuotes />
+            <QueryCancellation />
+            {/* <AnimalExample /> */}
+            {/* <SearchMealExample /> */}
+          </div>
+        </QueryClientProvider>
+      </GlobalSpinnerContext>
     </>
   );
 }
