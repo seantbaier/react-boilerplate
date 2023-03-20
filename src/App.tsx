@@ -10,6 +10,7 @@ import QueryCancellationWithAbortSignal from './components/QueryCancellationWith
 import BusinessCardEditor from '@/components/BusinessCard/BusinessCardEditor';
 import GlobalSpinnerContext from '@/context/GlobalSpinnerContext';
 import GlobalSpinnerExample from '@/components/GlobalSpinner/GlobalSpinnerExample';
+import ShoppingList from '@/components/ShoppingList/ShoppingList';
 // import SearchMealExample from '@/components/SearchMealExample';
 // import AnimalExample from '@/components/AnimalExample';
 
@@ -28,6 +29,7 @@ function App() {
             <h1 className='font-semibold text-2xl'>
               React - The Road To Enterprise
             </h1>
+            <ShoppingList />
             <GlobalSpinnerExample />
             <BusinessCardEditor />
             <QueryCancellationWithAbortSignal />
