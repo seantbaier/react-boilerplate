@@ -15,7 +15,7 @@ function AnimalExample() {
 
   useEffect(() => {
     initFetchDog();
-  }, [initFetchDog]);
+  }, []);
 
   return (
     <div className='my-8 mx-auto max-w-2xl'>
