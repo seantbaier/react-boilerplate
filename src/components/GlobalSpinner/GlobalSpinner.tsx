@@ -1,16 +1,9 @@
 import clsx from 'clsx';
-import { useContext } from 'react';
 
-import {
-  GlobalSpinnerContext,
-  GlobalSpinnerContextValue,
-} from '@/context/GlobalSpinnerContext';
+import { useGlobalSpinnerContext } from '@/context/GlobalSpinnerContext';
 
 const GlobalSpinner = () => {
-  const { isSpinnerVisible } = useContext(
-    GlobalSpinnerContext
-  ) as GlobalSpinnerContextValue;
-
+  const { isSpinnerVisible } = useGlobalSpinnerContext();
   return (
     <div className='relative'>
       <div
@@ -45,4 +38,5 @@ const GlobalSpinner = () => {
     </div>
   );
 };
+
 export default GlobalSpinner;

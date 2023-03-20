@@ -1,27 +1,32 @@
-import React, { createContext } from 'react';
+import React, { useMemo } from 'react';
 
 import GlobalSpinner from '@/components/GlobalSpinner/GlobalSpinner';
+import { contextFactory } from '@/utils/contextFactory';
 import { useToggleState } from '@/hooks/useToggleState';
 
-export type GlobalSpinnerContextValue = {
+type GlobalSpinnerValues = {
   isSpinnerVisible: boolean;
+};
+
+type GlobalSpinnerActions = {
   showSpinner: () => void;
   hideSpinner: () => void;
   toggleSpinner: () => void;
 };
 
-export const GlobalSpinnerContext = createContext<
-  GlobalSpinnerContextValue | undefined
->(undefined);
+export const [useGlobalSpinnerContext, GlobalSpinnerContext] =
+  contextFactory<GlobalSpinnerValues>();
 
-type GlobalSpinnerContextProviderProps = {
+export const [useGlobalSpinnerActionsContext, GlobalSpinnerActionsContext] =
+  contextFactory<GlobalSpinnerActions>();
+
+interface Props {
   children: React.ReactNode;
-};
+}
 
-const GlobalSpinnerContextProvider = (
-  props: GlobalSpinnerContextProviderProps
-) => {
+const GlobalSpinnerContextProvider = (props: Props) => {
   const { children } = props;
+
   const {
     state: isSpinnerVisible,
     open: showSpinner,
@@ -29,17 +34,28 @@ const GlobalSpinnerContextProvider = (
     toggle: toggleSpinner,
   } = useToggleState(false);
 
+  const values = useMemo(
+    () => ({
+      isSpinnerVisible,
+    }),
+    [isSpinnerVisible]
+  );
+
+  const actions = useMemo(
+    () => ({
+      showSpinner,
+      hideSpinner,
+      toggleSpinner,
+    }),
+    []
+  );
+
   return (
-    <GlobalSpinnerContext.Provider
-      value={{
-        isSpinnerVisible,
-        showSpinner,
-        hideSpinner,
-        toggleSpinner,
-      }}
-    >
-      {children}
-      <GlobalSpinner />
+    <GlobalSpinnerContext.Provider value={values}>
+      <GlobalSpinnerActionsContext.Provider value={actions}>
+        {children}
+        <GlobalSpinner />
+      </GlobalSpinnerActionsContext.Provider>
     </GlobalSpinnerContext.Provider>
   );
 };
