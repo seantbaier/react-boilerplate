@@ -1,10 +1,10 @@
 import Spinner from '@/components/Spinner';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { removeUser, selectUser } from '../usersSlice';
+import { removeUser, selectAllUsers, selectUser } from '../usersSlice';
 
 const DisplayUsers = () => {
   const dispatch = useAppDispatch();
-  const users = useAppSelector((state) => state.users.users);
+  const users = useAppSelector(selectAllUsers);
   const deletingUserId = useAppSelector((state) => state.users.deletingUserId);
 
   return (

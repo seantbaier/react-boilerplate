@@ -3,15 +3,14 @@ import { RootState } from '@/store';
 import {
   createSlice,
   PayloadAction,
-  createSelector,
   createAsyncThunk,
+  createEntityAdapter,
 } from '@reduxjs/toolkit';
 import { User } from './UsersManager.types';
 
 type ApiStatus = 'IDLE' | 'PENDING' | 'SUCCESS' | 'ERROR';
 
 export type UsersState = {
-  users: User[];
   selectedUserId: User['id'] | null;
   fetchUsersStatus: ApiStatus;
   addUserStatus: ApiStatus;
@@ -20,7 +19,6 @@ export type UsersState = {
 };
 
 const initialState: UsersState = {
-  users: [],
   selectedUserId: null,
   fetchUsersStatus: 'IDLE',
   addUserStatus: 'IDLE',
@@ -38,12 +36,16 @@ export const removeUser = createAsyncThunk(
   }
 );
 
+const usersAdapter = createEntityAdapter<User>({
+  sortComparer: (a, b) => a.email.localeCompare(b.email),
+});
+
 export const usersSlice = createSlice({
   name: 'users',
-  initialState,
+  initialState: usersAdapter.getInitialState<UsersState>(initialState),
   reducers: {
     setUsers: (state, action: PayloadAction<User[]>) => {
-      state.users = action.payload;
+      usersAdapter.setAll(state, action.payload);
     },
     selectUser: (state, action: PayloadAction<string>) => {
       state.selectedUserId = action.payload;
@@ -54,8 +56,8 @@ export const usersSlice = createSlice({
       state.fetchUsersStatus = 'PENDING';
     });
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
+      usersAdapter.setAll(state, action.payload);
       state.fetchUsersStatus = 'SUCCESS';
-      state.users = action.payload;
     });
     builder.addCase(fetchUsers.rejected, (state) => {
       state.fetchUsersStatus = 'ERROR';
@@ -64,7 +66,7 @@ export const usersSlice = createSlice({
       state.addUserStatus = 'PENDING';
     });
     builder.addCase(addUser.fulfilled, (state, action) => {
-      state.users.push(action.payload.user);
+      usersAdapter.addOne(state, action.payload.user);
       state.addUserStatus = 'SUCCESS';
     });
     builder.addCase(addUser.rejected, (state) => {
@@ -75,9 +77,7 @@ export const usersSlice = createSlice({
       state.deleteUserStatus = 'PENDING';
     });
     builder.addCase(removeUser.fulfilled, (state, action) => {
-      state.users = state.users.filter(
-        (_user) => _user.id !== action.payload.id
-      );
+      usersAdapter.removeOne(state, action.payload.id);
       state.deleteUserStatus = 'SUCCESS';
       state.deletingUserId = null;
     });
@@ -90,14 +90,16 @@ export const usersSlice = createSlice({
 
 export const { setUsers, selectUser } = usersSlice.actions;
 
-export const getSelectedUser = createSelector(
-  (state: RootState) => state.users,
-  (users) => {
-    if (users.selectedUserId) {
-      return users.users.find((user) => user.id === users.selectedUserId);
-    }
-    return null;
-  }
+export const usersSelector = usersAdapter.getSelectors<RootState>(
+  (state) => state.users
 );
+
+export const getSelectedUser = (state: RootState) => {
+  return state.users.selectedUserId
+    ? usersSelector.selectById(state, state.users.selectedUserId)
+    : null;
+};
+
+export const { selectAll: selectAllUsers } = usersSelector;
 
 export default usersSlice.reducer;
