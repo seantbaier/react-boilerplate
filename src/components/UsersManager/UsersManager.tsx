@@ -4,15 +4,17 @@ import Spinner from '../Spinner';
 import AddUsers from './components/AddUsers';
 import DisplayUsers from './components/DisplayUsers';
 import SelectedUserDetails from './components/SelectedUserDetails';
-import { fetchUsers } from './usersSlice';
+import { fetchUsers, selectTotalUsers } from './usersSlice';
 
 const UsersManager = () => {
   const dispatch = useAppDispatch();
   const fetchUsersStatus = useAppSelector(
     (state) => state.users.fetchUsersStatus
   );
+  const totalUsers = useAppSelector(selectTotalUsers);
 
   useEffect(() => {
+    if (totalUsers) return;
     dispatch(fetchUsers());
   }, [dispatch]);
 
