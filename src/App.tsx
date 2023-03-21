@@ -11,7 +11,7 @@ import { ToastContainer } from 'react-toastify';
 import GlobalSpinnerContext from '@/context/GlobalSpinnerContext';
 // import GlobalSpinnerExample from '@/components/GlobalSpinner/GlobalSpinnerExample';
 // import ShoppingList from '@/components/ShoppingList/ShoppingList';
-import UsersManager from '@/components/UsersManager/components/UsersManager';
+import UsersManager from '@/components/UsersManager/UsersManager';
 // import SearchMealExample from '@/components/SearchMealExample';
 // import AnimalExample from '@/components/AnimalExample';
 
