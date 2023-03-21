@@ -1,4 +1,4 @@
-import { listUsers } from '@/api/userApi';
+import { listUsers, createUser, deleteUser } from '@/api/userApi';
 import { RootState } from '@/store';
 import {
   createSlice,
@@ -14,15 +14,29 @@ export type UsersState = {
   users: User[];
   selectedUserId: User['id'] | null;
   fetchUsersStatus: ApiStatus;
+  addUserStatus: ApiStatus;
+  deleteUserStatus: ApiStatus;
+  deletingUserId: User['id'] | null;
 };
 
 const initialState: UsersState = {
   users: [],
   selectedUserId: null,
   fetchUsersStatus: 'IDLE',
+  addUserStatus: 'IDLE',
+  deleteUserStatus: 'IDLE',
+  deletingUserId: null,
 };
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', listUsers);
+export const addUser = createAsyncThunk('users/addUser', createUser);
+export const removeUser = createAsyncThunk(
+  'users/removeUser',
+  async (userData: User) => {
+    await deleteUser(userData.id);
+    return userData;
+  }
+);
 
 export const usersSlice = createSlice({
   name: 'users',
@@ -36,17 +50,40 @@ export const usersSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // eslint-disable-next-line
-    builder.addCase(fetchUsers.pending, (state, action) => {
+    builder.addCase(fetchUsers.pending, (state) => {
       state.fetchUsersStatus = 'PENDING';
     });
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
       state.fetchUsersStatus = 'SUCCESS';
       state.users = action.payload;
     });
-    // eslint-disable-next-line
-    builder.addCase(fetchUsers.rejected, (state, action) => {
+    builder.addCase(fetchUsers.rejected, (state) => {
       state.fetchUsersStatus = 'ERROR';
+    });
+    builder.addCase(addUser.pending, (state) => {
+      state.addUserStatus = 'PENDING';
+    });
+    builder.addCase(addUser.fulfilled, (state, action) => {
+      state.users.push(action.payload.user);
+      state.addUserStatus = 'SUCCESS';
+    });
+    builder.addCase(addUser.rejected, (state) => {
+      state.addUserStatus = 'ERROR';
+    });
+    builder.addCase(removeUser.pending, (state, action) => {
+      state.deletingUserId = action.meta.arg.id;
+      state.deleteUserStatus = 'PENDING';
+    });
+    builder.addCase(removeUser.fulfilled, (state, action) => {
+      state.users = state.users.filter(
+        (_user) => _user.id !== action.payload.id
+      );
+      state.deleteUserStatus = 'SUCCESS';
+      state.deletingUserId = null;
+    });
+    builder.addCase(removeUser.rejected, (state) => {
+      state.deleteUserStatus = 'ERROR';
+      state.deletingUserId = null;
     });
   },
 });

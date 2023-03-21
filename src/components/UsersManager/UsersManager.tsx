@@ -8,7 +8,6 @@ import { fetchUsers } from './usersSlice';
 
 const UsersManager = () => {
   const dispatch = useAppDispatch();
-
   const fetchUsersStatus = useAppSelector(
     (state) => state.users.fetchUsersStatus
   );
