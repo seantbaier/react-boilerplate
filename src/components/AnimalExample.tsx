@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-import LazySpinner from './LazySpinner';
 import { useFetchDog } from '@/hooks/useFetchDog';
+import LazySpinner from './LazySpinner';
 
 function AnimalExample() {
   const {

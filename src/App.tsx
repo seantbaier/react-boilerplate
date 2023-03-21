@@ -1,16 +1,17 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 
-import FetchTopQuotes from '@/components/FetchTopQuotes';
-import UpdateQuotes from '@/components/UpdateQuotes';
-import PaginatedQuotes from '@/components/PaginatedQuotes';
-import InfiniteScrollQuotes from '@/components/InfiniteScrollQuotes';
-import QueryCancellation from '@/components/QueryCancellation';
-import QueryCancellationWithAbortSignal from './components/QueryCancellationWithAbortSignal';
-import BusinessCardEditor from '@/components/BusinessCard/BusinessCardEditor';
+// import FetchTopQuotes from '@/components/FetchTopQuotes';
+// import UpdateQuotes from '@/components/UpdateQuotes';
+// import PaginatedQuotes from '@/components/PaginatedQuotes';
+// import InfiniteScrollQuotes from '@/components/InfiniteScrollQuotes';
+// import QueryCancellation from '@/components/QueryCancellation';
+// import QueryCancellationWithAbortSignal from './components/QueryCancellationWithAbortSignal';
+// import BusinessCardEditor from '@/components/BusinessCard/BusinessCardEditor';
 import GlobalSpinnerContext from '@/context/GlobalSpinnerContext';
-import GlobalSpinnerExample from '@/components/GlobalSpinner/GlobalSpinnerExample';
-import ShoppingList from '@/components/ShoppingList/ShoppingList';
+// import GlobalSpinnerExample from '@/components/GlobalSpinner/GlobalSpinnerExample';
+// import ShoppingList from '@/components/ShoppingList/ShoppingList';
+import UsersManager from '@/components/UsersManager/components/UsersManager';
 // import SearchMealExample from '@/components/SearchMealExample';
 // import AnimalExample from '@/components/AnimalExample';
 
@@ -29,7 +30,8 @@ function App() {
             <h1 className='font-semibold text-2xl'>
               React - The Road To Enterprise
             </h1>
-            <ShoppingList />
+            <UsersManager />
+            {/* <ShoppingList />
             <GlobalSpinnerExample />
             <BusinessCardEditor />
             <QueryCancellationWithAbortSignal />
@@ -37,7 +39,7 @@ function App() {
             <FetchTopQuotes />
             <PaginatedQuotes />
             <InfiniteScrollQuotes />
-            <QueryCancellation />
+            <QueryCancellation /> */}
             {/* <AnimalExample /> */}
             {/* <SearchMealExample /> */}
           </div>
