@@ -15,10 +15,14 @@ import UsersManager from '@/components/UsersManager/UsersManager';
 // import SearchMealExample from '@/components/SearchMealExample';
 // import AnimalExample from '@/components/AnimalExample';
 
-import { fetchUsers, resetUsers } from '@/components/UsersManager/usersSlice';
-import { useAppDispatch, useAppSelector } from './store/hooks';
+import {
+  resetUsersSlice,
+  resetUsersApiSlice,
+  initialiseUsersApi,
+} from '@/components/UsersManager/usersSlice';
+import { useAppDispatch } from './store/hooks';
 import { resetStore } from '@/store';
-import { increment } from '@/store/counterSlice';
+// import { increment } from '@/store/counterSlice';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -27,7 +31,6 @@ const queryClient = new QueryClient();
 
 function App() {
   const dispatch = useAppDispatch();
-  const count = useAppSelector((state) => state.counter.count);
 
   return (
     <>
@@ -42,7 +45,10 @@ function App() {
               <div className='space-x-4 my-8'>
                 <button
                   className='shadow px-4 py-3 bg-blue-100'
-                  onClick={() => dispatch(resetUsers(null))}
+                  onClick={() => {
+                    dispatch(resetUsersSlice());
+                    dispatch(resetUsersApiSlice());
+                  }}
                 >
                   Reset users slice
                 </button>
@@ -54,15 +60,9 @@ function App() {
                 </button>
                 <button
                   className='shadow px-4 py-3 bg-blue-100'
-                  onClick={() => dispatch(fetchUsers())}
+                  onClick={() => dispatch(initialiseUsersApi())}
                 >
                   Fetch users
-                </button>
-                <button
-                  className='shadow px-4 py-3 bg-blue-100'
-                  onClick={() => dispatch(increment())}
-                >
-                  Increment Counter {count}
                 </button>
               </div>
               <UsersManager />

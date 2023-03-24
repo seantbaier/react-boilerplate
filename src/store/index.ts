@@ -11,13 +11,16 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import usersReducer from '@/components/UsersManager/usersSlice';
+import usersReducer, {
+  usersApiSlice,
+} from '@/components/UsersManager/usersSlice';
 import { counterReducer } from './counterSlice';
 
 export const resetStore = createAction('resetStore');
 
 const rootReducer = combineReducers({
   users: usersReducer,
+  [usersApiSlice.reducerPath]: usersApiSlice.reducer,
   counter: counterReducer,
 });
 
@@ -34,7 +37,7 @@ const persistConfig = {
   version: 1,
   storage,
   // whitelist: ['users'],
-  // blacklist: [],
+  blacklist: [usersApiSlice.reducerPath],
 };
 
 const persistedReducer = persistReducer(persistConfig, appReducer);
@@ -46,7 +49,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(usersApiSlice.middleware),
 });
 
 export const persistor = persistStore(store);
