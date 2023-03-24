@@ -1,7 +1,8 @@
 import { RootState } from '@/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from './UsersManager.types';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
+import { listUsers, createUser, deleteUser } from '@/api/userApi';
 
 export type UsersState = {
   selectedUserId: User['id'] | null;
@@ -14,34 +15,32 @@ const initialState: UsersState = {
 };
 
 export const usersApiSlice = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl:
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:4000/api/'
-        : '/api/',
-  }),
+  baseQuery: fakeBaseQuery(),
   tagTypes: ['Users'],
   endpoints: (builder) => ({
     fetchUsers: builder.query<User[], void>({
-      query: () => `user/all`,
-      transformResponse: (response: { users: User[] }) => {
-        return response.users;
+      queryFn: async () => {
+        return {
+          data: await listUsers(),
+        };
       },
       providesTags: ['Users'],
     }),
     createUser: builder.mutation<{ user: User }, User>({
-      query: (user) => ({
-        url: `user`,
-        method: 'POST',
-        body: user,
-      }),
+      queryFn: async (user) => {
+        return {
+          data: await createUser(user),
+        };
+      },
       invalidatesTags: ['Users'],
     }),
     removeUser: builder.mutation<boolean, User>({
-      query: (user) => ({
-        url: `user/${user.id}`,
-        method: 'DELETE',
-      }),
+      queryFn: async (user) => {
+        await deleteUser(user.id);
+        return {
+          data: true,
+        };
+      },
       invalidatesTags: ['Users'],
       onQueryStarted: async (user, { dispatch, queryFulfilled }) => {
         dispatch(setDeletingUserId(user.id));
