@@ -15,12 +15,17 @@ import UsersManager from '@/components/UsersManager/UsersManager';
 // import SearchMealExample from '@/components/SearchMealExample';
 // import AnimalExample from '@/components/AnimalExample';
 
+import { fetchUsers, resetUsers } from './components/UsersManager/usersSlice';
+import { useAppDispatch } from './store/hooks';
+
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 const queryClient = new QueryClient();
 
 function App() {
+  const dispatch = useAppDispatch();
+
   return (
     <>
       <GlobalSpinnerContext>
@@ -30,7 +35,23 @@ function App() {
             <h1 className='font-semibold text-2xl'>
               React - The Road To Enterprise
             </h1>
-            <UsersManager />
+            <main>
+              <div className='space-x-4 my-8'>
+                <button
+                  className='shadow px-4 py-3 bg-blue-100'
+                  onClick={() => dispatch(resetUsers(null))}
+                >
+                  Reset users slice
+                </button>
+                <button
+                  className='shadow px-4 py-3 bg-blue-100'
+                  onClick={() => dispatch(fetchUsers())}
+                >
+                  Fetch users
+                </button>
+              </div>
+              <UsersManager />
+            </main>
             {/* <ShoppingList />
             <GlobalSpinnerExample />
             <BusinessCardEditor />
