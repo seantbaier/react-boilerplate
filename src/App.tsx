@@ -1,6 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 
+import UsersManager from '@/components/UsersManager/UsersManager';
+import GlobalSpinnerContext from '@/context/GlobalSpinnerContext';
 // import FetchTopQuotes from '@/components/FetchTopQuotes';
 // import UpdateQuotes from '@/components/UpdateQuotes';
 // import PaginatedQuotes from '@/components/PaginatedQuotes';
@@ -8,10 +10,8 @@ import { ToastContainer } from 'react-toastify';
 // import QueryCancellation from '@/components/QueryCancellation';
 // import QueryCancellationWithAbortSignal from './components/QueryCancellationWithAbortSignal';
 // import BusinessCardEditor from '@/components/BusinessCard/BusinessCardEditor';
-import GlobalSpinnerContext from '@/context/GlobalSpinnerContext';
 // import GlobalSpinnerExample from '@/components/GlobalSpinner/GlobalSpinnerExample';
 // import ShoppingList from '@/components/ShoppingList/ShoppingList';
-import UsersManager from '@/components/UsersManager/UsersManager';
 // import SearchMealExample from '@/components/SearchMealExample';
 // import AnimalExample from '@/components/AnimalExample';
 
